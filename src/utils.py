@@ -16,6 +16,7 @@ class Utils:
             completions (int): The number of completions made by the given move in the given state
 
         """
+
         completions = 0
         lines = set(state[1]) | set(state[2])
         (x, y) = move
@@ -71,6 +72,7 @@ class Utils:
             completions (int): The number of completions that were made as a result of the move
 
         """
+
         result = deepcopy(state)
         completions = Utils.is_completion(state, move)
         result[result["player"]].append(move)
@@ -96,6 +98,7 @@ class Utils:
             True if no valid moves left, otherwise False
 
         """
+
         return len(moves) == 0
 
     def valid_moves(state):
@@ -108,6 +111,7 @@ class Utils:
             result (list): A list of tuples where each tuple is a valid move (x,y)
 
         """
+
         result = []
         [x_dim, y_dim] = state["board_size"]
 
@@ -135,6 +139,7 @@ class Utils:
             data (dict): The game state that was represented in the given file
 
         """
+
         try:  # Attempt to open the game state file
             f = open(file)
         except Exception as err:
