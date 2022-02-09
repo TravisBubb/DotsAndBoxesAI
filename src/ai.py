@@ -187,6 +187,7 @@ class AI:
 
         """
 
+        # Store both players' scores before minimax call
         prev_score = self.get_score()
         opp_score = opp.get_score()
 
@@ -194,6 +195,7 @@ class AI:
         depth = 4
         move = self.minimax(state, depth, opp, prev_score, opp_score)
 
+        # Reset the players' scores after the minimax call
         self.set_score(prev_score)
         opp.set_score(opp_score)
 
