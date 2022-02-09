@@ -129,6 +129,40 @@ class Utils:
         ]
         return result
 
+    def process_data(data, line, player_num):
+        """Process given data and add the player's current positions to the state
+
+        Parameters:
+            data (dict): The game state that is being built from a state file
+            line (str): A line of text from a state file to process
+            player_num (int): The number that ties a player to the given board positions (1 or 2)
+
+        Return:
+            data (dict): The game state that was represented in the given file
+
+        """
+
+        # Verify that the given data line corresponds with the desired player
+        if f"p{player_num}:" in line:
+            positions = line.split(f"p{player_num}: ")
+            if len(positions) == 2:  # If there is n >= 1 board position for the player
+
+                # Add the board positions for the player to the state.
+                # Turn the ordered pairs into tuples (e.g., "(1, 2)" -> tuple('1', '2'))
+                data[player_num] = list(
+                    map(
+                        lambda x: tuple(x.replace("(", "").replace(")", "").split(",")),
+                        positions[1].split(" "),
+                    )
+                )
+                # Cast all of the board position values to tuples of ints from strings
+                data[player_num] = list(
+                    map(lambda x: (int(x[0]), int(x[1])), data[player_num])
+                )
+            else:  # There are no given board positions for the player
+                data[player_num] = []
+        return data
+
     def read_state_file(file):
         """Read a file and parse the game state information contained within
 
@@ -159,41 +193,11 @@ class Utils:
                     map(lambda x: int(x), line.split("=")[1].split("x"))
                 )
 
-            ####### TODO: Make a function that processes this data;; pass the player as an argument #############
-
             # Add player one's current board positions
-            if "p1:" in line:
-                positions = line.split("p1: ")
-                if len(positions) == 2:
-                    data[1] = list(
-                        map(
-                            lambda x: tuple(
-                                x.replace("(", "").replace(")", "").split(",")
-                            ),
-                            positions[1].split(" "),
-                        )
-                    )
-                    data[1] = list(map(lambda x: (int(x[0]), int(x[1])), data[1]))
-                else:
-                    data[1] = []
+            data = Utils.process_data(data.copy(), line, 1)
 
             # Add player two's current board positions
-            if "p2:" in line:
-                positions = line.split("p2: ")
-                if len(positions) == 2:
-                    data[2] = list(
-                        map(
-                            lambda x: tuple(
-                                x.replace("(", "").replace(")", "").split(",")
-                            ),
-                            positions[1].split(" "),
-                        )
-                    )
-                    data[2] = list(map(lambda x: (int(x[0]), int(x[1])), data[2]))
-                else:
-                    data[2] = []
-            ########################################################################## end TODO
-
+            data = Utils.process_data(data.copy(), line, 2)
         f.close()
 
         # Add the current player's turn
