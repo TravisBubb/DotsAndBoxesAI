@@ -45,7 +45,14 @@ $ python ai.py <filename>
 Note: The file should contain a game state. Please see src/test-cases/* for formatting examples of game state files.
 
 ## AI Implementation
+The core of the AI agent is a simple minimax algorithm with alpha-beta pruning. Minimax was used since it is a fairly simply algorithm and supports the structure of the game - two player, turn-based game. The algorithm takes in a game state and desired depth, and it loops through all open board positions and their successors to see which path will yield the most desirable outcome. To evaluate the different possible moves, the outcomes are weighed simply by how many points the AI player will have after a given sequence of moves.
 
 ## AI Results
+One of the biggest issues that was found with the implementation of the AI agent was that it is not very efficient and doesn't allow for a very large depth as a result of that. For the 3x3 board the AI works great with a maximum tree depth of 3 and 4. For the 4x4 board, a depth of 3 worked well and 4 was playable but not the fastest gameplay. Anything over a board size of 4x4 is too slow to enjoy playing the game.  
+
+Another issue that was discovered with using the minimax approach was that it works well during the mid-to-late game but not so well during the early game. Due to the nature of minimax, and utilizing a depth limit, it is more difficult for the agent to determine what moves are good in the early game when there are little to no moves already present on the board.
 
 ## Project Status 
+As of now, this project is not being worked on. However, it may be that a different methodology is implemented to form a more desirable AI agent. I am currently in a higher-level artificial intelligence course that covers more advanced topics like reinforcement learning, machine learning, deep learning, and more. It may turn out that I am able to use these new concepts that I learn to create a better agent.  
+
+Something else I would also like to do is implement this project in another language that is more sensitive to speed like C++. It would be interesting to see if merely changing the language the project is written in would affect the depth I am able to go into the tree and thus the agent could make better decisions.
